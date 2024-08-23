@@ -21,4 +21,7 @@ clean:
 
 .PHONY: build
 build: clean
-	cp -r noVNC/dist/* dist/
+	cp -r noVNC/app dist/
+	cp -r noVNC/core dist/
+	cp -r noVNC/vendor dist/
+	cp -r noVNC/*.html dist/

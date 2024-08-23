@@ -46,7 +46,7 @@ func FS() fs.FS {
 
 // Handler noVNC dist handler
 func Handler() http.Handler {
-	return http.FileServer(http.FS(assets))
+	return http.FileServer(http.FS(FS()))
 }
 
 // Template noVNC html template

@@ -7,6 +7,7 @@ import (
 	"embed"
 	"io/fs"
 	"net/http"
+	"strings"
 	"text/template"
 )
 
@@ -18,9 +19,29 @@ var (
 	tpl    = template.Must(template.New("").ParseFS(distFS, "dist/*.html"))
 )
 
+// aliasFS alias FS
+type aliasFS struct {
+	rawFS     fs.FS
+	nameAlias map[string]string
+}
+
+// Open noVNC dist Open
+func (fs *aliasFS) Open(name string) (fs.File, error) {
+	for k, v := range fs.nameAlias {
+		if strings.HasPrefix(name, k) {
+			name = strings.ReplaceAll(name, k, v)
+		}
+	}
+	return fs.rawFS.Open(name)
+}
+
 // FS noVNC dist FS
 func FS() fs.FS {
-	return assets
+	f := &aliasFS{
+		rawFS:     assets,
+		nameAlias: map[string]string{"vendor": "my_vendor"},
+	}
+	return f
 }
 
 // Handler noVNC dist handler

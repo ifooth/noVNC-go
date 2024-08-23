@@ -23,5 +23,9 @@ clean:
 build: clean
 	cp -r noVNC/app dist/
 	cp -r noVNC/core dist/
-	cp -r noVNC/vendor dist/
+	cp -r noVNC/vendor dist/my_vendor
 	cp -r noVNC/*.html dist/
+
+.PHONY: test
+test:
+	go test -cover -count=1 -v ./...

@@ -2,9 +2,6 @@ package novnc
 
 import (
 	"testing"
-
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestAssets(t *testing.T) {
@@ -16,12 +13,19 @@ func TestAssets(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt, func(t *testing.T) {
 			f, err := assets.Open(tt)
-			require.NoError(t, err)
+			if err != nil {
+				t.Fatalf("failed to open file %s: %v", tt, err)
+			}
 
 			body := make([]byte, 10)
 			length, err := f.Read(body)
-			assert.NoError(t, err)
-			assert.Equal(t, length, 10)
+			if err != nil {
+				t.Fatalf("failed to read file %s: %v", tt, err)
+			}
+
+			if length != 10 {
+				t.Errorf("expected length 10, got %d", length)
+			}
 		})
 	}
 }
@@ -35,12 +39,19 @@ func TestVendor(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt, func(t *testing.T) {
 			f, err := FS().Open(tt)
-			require.NoError(t, err)
+			if err != nil {
+				t.Fatalf("failed to open file %s: %v", tt, err)
+			}
 
 			body := make([]byte, 10)
 			length, err := f.Read(body)
-			assert.NoError(t, err)
-			assert.Equal(t, length, 10)
+			if err != nil {
+				t.Fatalf("failed to read file %s: %v", tt, err)
+			}
+
+			if length != 10 {
+				t.Errorf("expected length 10, got %d", length)
+			}
 		})
 	}
 }

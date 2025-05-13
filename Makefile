@@ -1,4 +1,6 @@
-all: build
+.PHONY: default
+default: update-submodule build test
+	@echo "Updated noVNC to tag ${LATEST_TAG} done"
 
 .PHONY: init
 init:
@@ -29,3 +31,5 @@ build: clean
 .PHONY: test
 test:
 	go test -cover -count=1 -v ./...
+
+
